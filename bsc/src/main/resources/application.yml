@@ -1,0 +1,11 @@
+server:
+  address: localhost
+  port: 8080
+
+base:
+  detection:
+    minDistance: !!float 0.0
+    maxDistance: !!float 500.0
+    averageDistance: !!float 300.0
+  mesh:
+    maxSize: 99

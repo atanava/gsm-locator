@@ -9,3 +9,13 @@ base:
     averageDistance: !!float 300.0
   mesh:
     maxSize: 99
+
+osm:
+  uri:
+    basic: https://nominatim.openstreetmap.org/?q=
+    params:
+      type: > 
+        hotel, 
+        supermarket
+      location: tallinn
+      format: json

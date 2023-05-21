@@ -153,7 +153,7 @@ public class GeometryUtil {
      * lat1, lon1 Start point lat2, lon2 End point el1 Start altitude in meters
      * el2 End altitude in meters
      *
-     * @returns Distance in Meters
+     * @return Distance in Meters
      */
     //TODO: Try to use some constants
     public static double distanceInMeters(double lat1, double lat2, double lon1,

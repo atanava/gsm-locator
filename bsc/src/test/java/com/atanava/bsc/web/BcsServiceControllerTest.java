@@ -7,7 +7,6 @@ import com.atanava.bsc.service.data.Triangle;
 import com.atanava.bsc.util.BaseStationConverter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,7 +29,6 @@ class BcsServiceControllerTest {
     @MockBean
     private BcsCacheHolder meshHolder;
 
-    @Disabled
     @Test
     void getBaseStationMesh() throws JsonProcessingException {
         SortedSet<Triangle> source = TestData.getBcsCacheHolder().getBaseStationMesh().getTriangles();

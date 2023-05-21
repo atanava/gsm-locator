@@ -17,8 +17,8 @@ drop table if exists report;
 create table if not exists report
 (
     id        UUID DEFAULT RANDOM_UUID() PRIMARY KEY,
-    base_id   UUID,
-    mobile_id UUID,
+    base_id   UUID      not null,
+    mobile_id UUID      not null,
     distance  float     not null,
     timestamp timestamp not null,
     constraint base_id_mobile_id_timestamp_index unique (base_id, mobile_id, timestamp)

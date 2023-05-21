@@ -2,7 +2,11 @@ package com.atanava.bsc.service;
 
 import com.atanava.bsc.dto.LastKnownLocation;
 import com.atanava.bsc.dto.MessageDto;
+import com.atanava.bsc.error.FakeReportException;
+import com.atanava.bsc.error.NotFoundException;
+import com.atanava.bsc.model.BaseStation;
 import com.atanava.bsc.model.Report;
+import com.atanava.bsc.repository.BaseStationRepository;
 import com.atanava.bsc.service.data.BaseStationDefinition;
 import com.atanava.bsc.service.data.BaseStationMesh;
 import com.atanava.bsc.service.data.Triangle;
@@ -30,14 +34,26 @@ public class BaseStationService {
 
     private final BcsCacheHolder meshHolder;
 
+    private final BaseStationRepository baseStationRepository;
+
     public Mono<MessageDto> saveReports(MessageDto messageDto){
-        return reportService.saveReports(messageDto);
+        return baseStationRepository.findById(messageDto.getBaseId())
+                .switchIfEmpty(Mono.error(new FakeReportException(messageDto.getBaseId())))
+                .flatMap(base -> reportService.saveReports(messageDto))
+                .onErrorResume(e -> {
+                    log.error(e.getMessage() + System.lineSeparator() + "Report Message: " + messageDto);
+                    return Mono.just(messageDto);
+                });
+    }
+
+    public Mono<BaseStation> save(BaseStation baseStation) {
+        return baseStationRepository.save(baseStation);
     }
 
     public Mono<LastKnownLocation> findLastLocation(UUID mobileId, Pageable pageable) {
         BaseStationMesh baseStationMesh = meshHolder.getBaseStationMesh();
         return reportService.findLastReports(mobileId, pageable)
-                .switchIfEmpty(Mono.error(new RuntimeException()))
+                .switchIfEmpty(Mono.error(new NotFoundException("Reports were not found for mobileId: " + mobileId)))
                 .collectList()
                 .flatMap(list -> Flux.fromIterable(list)
                         .filter(report -> mobileId.equals(report.getMobileId()))
@@ -60,7 +76,10 @@ public class BaseStationService {
                         )
                         .next()
                         .switchIfEmpty(Mono.error(new RuntimeException()))
-                        .onErrorResume((e) -> Mono.just(prepareError(mobileId, -1F)))
+                        .onErrorResume((e) -> {
+                            log.error(e.getMessage());
+                            return Mono.just(prepareError(mobileId, -1F));
+                        })
                 );
     }
 

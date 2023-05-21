@@ -32,17 +32,17 @@ public class TestData {
 
     private static final float MAX_DETECTION = (float) GeometryUtil.distanceInMeters(new Point2D.Double(0, 0), new Point2D.Double(0, 8));
     public static final Point2D.Double POINT_A = new BaseStationDefinition(ID_A, 12.0, 10.0, "A", MAX_DETECTION);
-    public static final Point2D.Double POINT_B = new BaseStationDefinition(ID_B, 21.0, 15.0, "A", MAX_DETECTION);
-    public static final Point2D.Double POINT_C = new BaseStationDefinition(ID_A, 14.0, 22.0, "A", MAX_DETECTION);
-    public static final Point2D.Double INNER_POINT = new BaseStationDefinition(ID_A, 17.0, 16.0, "A", MAX_DETECTION);
-    public static final Point2D.Double OUTER_POINT = new BaseStationDefinition(ID_A, 23.0, 19.0, "A", MAX_DETECTION);
+    public static final Point2D.Double POINT_B = new BaseStationDefinition(ID_B, 21.0, 15.0, "B", MAX_DETECTION);
+    public static final Point2D.Double POINT_C = new BaseStationDefinition(ID_C, 14.0, 22.0, "C", MAX_DETECTION);
+    public static final Point2D.Double INNER_POINT = new BaseStationDefinition(ID_INNER, 17.0, 16.0, "INNER", MAX_DETECTION);
+    public static final Point2D.Double OUTER_POINT = new BaseStationDefinition(ID_OUTER, 23.0, 19.0, "OUTER", MAX_DETECTION);
 
     public static final ReportDto REPORT_DTO_A_INNER = new ReportDto(ID_INNER, (float) INNER_POINT.distance(POINT_A), getTimestamp());
     public static final ReportDto REPORT_DTO_B_INNER = new ReportDto(ID_INNER, (float) INNER_POINT.distance(POINT_B), getTimestamp());
     public static final ReportDto REPORT_DTO_C_INNER = new ReportDto(ID_INNER, (float) INNER_POINT.distance(POINT_C), getTimestamp());
-    public static final ReportDto REPORT_DTO_A_OUTER = new ReportDto(ID_INNER, (float) OUTER_POINT.distance(POINT_A), getTimestamp());
-    public static final ReportDto REPORT_DTO_B_OUTER = new ReportDto(ID_INNER, (float) OUTER_POINT.distance(POINT_B), getTimestamp());
-    public static final ReportDto REPORT_DTO_C_OUTER = new ReportDto(ID_INNER, (float) OUTER_POINT.distance(POINT_C), getTimestamp());
+    public static final ReportDto REPORT_DTO_A_OUTER = new ReportDto(ID_OUTER, (float) OUTER_POINT.distance(POINT_A), getTimestamp());
+    public static final ReportDto REPORT_DTO_B_OUTER = new ReportDto(ID_OUTER, (float) OUTER_POINT.distance(POINT_B), getTimestamp());
+    public static final ReportDto REPORT_DTO_C_OUTER = new ReportDto(ID_OUTER, (float) OUTER_POINT.distance(POINT_C), getTimestamp());
 
     public static final MessageDto MESSAGE_DTO_A_INNER = new MessageDto(ID_A, Collections.singletonList(REPORT_DTO_A_INNER));
     public static final MessageDto MESSAGE_DTO_B_INNER = new MessageDto(ID_B, Collections.singletonList(REPORT_DTO_B_INNER));

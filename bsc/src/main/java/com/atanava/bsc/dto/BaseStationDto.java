@@ -8,7 +8,7 @@ import lombok.*;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = {"name"})
+@EqualsAndHashCode(of = {"name", "latitude", "longitude"})
 public class BaseStationDto {
     @JsonProperty("id")
     String id = "";

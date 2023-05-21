@@ -58,5 +58,6 @@ The system designed and implemented using following technologies / libraries:
 * At the start of the application emulator downloads some fake Base Station locations from the internet and saves them
 * After data downloaded users can retrieve mobile locations coordinates
 
-### Run
-Build and run `bsc` module. `bts-mesh` module is not yet working.
+### Build & run
+Build `bsc` module with maven profile `no-integration-tests`. Run.  
+`bts-mesh` module is not yet working.

@@ -2,6 +2,8 @@ package com.atanava.bsc.service;
 
 import com.atanava.bsc.dto.LastKnownLocation;
 import com.atanava.bsc.dto.MessageDto;
+import com.atanava.bsc.model.BaseStation;
+import com.atanava.bsc.repository.BaseStationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -18,14 +20,20 @@ class BaseStationServiceTest {
 
     private BaseStationService service;
 
+
     @BeforeEach
     void setup() {
         BcsCacheHolder meshHolder = getBcsCacheHolder();
         ReportService reportService = Mockito.mock(ReportService.class);
+        BaseStationRepository baseStationRepository = Mockito.mock(BaseStationRepository.class);
+
         Mockito.when(reportService.saveReports(any(MessageDto.class))).thenReturn(Mono.just(MESSAGE_DTO_A_INNER));
         Mockito.when(reportService.findLastReports(any(UUID.class), any(Pageable.class))).thenReturn(getReports());
 
-        service = new BaseStationService(reportService, meshHolder);
+        Mockito.when(baseStationRepository.save(any())).thenReturn(Mono.just(BaseStation.builder().build()));
+        Mockito.when(baseStationRepository.findById(any(UUID.class))).thenReturn(Mono.just(BaseStation.builder().build()));
+
+        service = new BaseStationService(reportService, meshHolder, baseStationRepository);
     }
 
     @Test

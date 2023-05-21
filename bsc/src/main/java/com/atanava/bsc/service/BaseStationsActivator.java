@@ -1,6 +1,5 @@
 package com.atanava.bsc.service;
 
-import com.atanava.bsc.repository.BaseStationRepository;
 import com.atanava.bsc.service.data.BaseStationDefinition;
 import com.atanava.bsc.util.BaseStationConverter;
 import com.atanava.bsc.util.GeometryUtil;
@@ -25,7 +24,7 @@ public class BaseStationsActivator {
 
     private final BaseStationDefinitionProvider stationDefinitionProvider;
 
-    private final BaseStationRepository repository;
+    private final BaseStationService baseStationService;
 
     private final TransactionalOperator txOperator;
 
@@ -33,7 +32,7 @@ public class BaseStationsActivator {
 
     public Mono<Integer> activateStations() {
         return stationDefinitionProvider.findFakeBaseStations()
-                .flatMap(dto -> repository.save(
+                .flatMap(dto -> baseStationService.save(
                                         BaseStationConverter.dtoToBaseStation(dto)
                                                 .toBuilder()
                                                 .detectionRadiusInMeters(averageDistance).build()

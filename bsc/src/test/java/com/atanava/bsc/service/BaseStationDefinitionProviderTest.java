@@ -3,6 +3,7 @@ package com.atanava.bsc.service;
 import com.atanava.bsc.dto.BaseStationDto;
 import com.atanava.bsc.util.GeometryUtil;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+@Tag("integration")
 @SpringBootTest
 class BaseStationDefinitionProviderTest {
 
@@ -45,7 +47,6 @@ class BaseStationDefinitionProviderTest {
     }
 
     /** Requires internet connection and Nominatim OSM service availability */
-    @Disabled
     @Test
     void findFakeBaseStations() {
         List<BaseStationDto> stations = Objects.requireNonNull(provider.findFakeBaseStations().collectList().block());

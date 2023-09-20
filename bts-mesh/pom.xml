@@ -12,9 +12,4 @@
     <artifactId>bts-mesh</artifactId>
     <description>Simple emulator of mobile traffic in BTS mesh</description>
 
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-    </properties>
-
 </project>

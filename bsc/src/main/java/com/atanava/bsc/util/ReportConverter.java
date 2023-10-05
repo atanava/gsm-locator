@@ -10,9 +10,9 @@ public class ReportConverter {
     public static Report dtoToReport(UUID baseId, ReportDto dto) {
         return Report.builder()
                 .baseId(baseId)
-                .mobileId(dto.getMobileId())
-                .distance(dto.getDistance())
-                .timestamp(dto.getTimestamp())
+                .mobileId(dto.mobileId())
+                .distance(dto.distance())
+                .timestamp(dto.timestamp())
                 .build();
     }
 }

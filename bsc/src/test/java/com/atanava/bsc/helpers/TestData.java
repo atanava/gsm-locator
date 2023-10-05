@@ -102,8 +102,8 @@ public class TestData {
         MessageDto[] messageDtos = {MESSAGE_DTO_A_INNER, MESSAGE_DTO_B_INNER, MESSAGE_DTO_C_INNER, MESSAGE_DTO_A_OUTER, MESSAGE_DTO_B_OUTER, MESSAGE_DTO_C_OUTER};
         return Flux.fromArray(messageDtos)
                 .flatMap(message -> {
-                    UUID baseId = message.getBaseId();
-                    return Flux.fromStream(message.getReports().stream()
+                    UUID baseId = message.baseId();
+                    return Flux.fromStream(message.reports().stream()
                             .map(dto -> ReportConverter.dtoToReport(baseId, dto)));
                 });
     }

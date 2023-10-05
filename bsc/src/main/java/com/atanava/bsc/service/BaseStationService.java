@@ -13,6 +13,7 @@ import com.atanava.bsc.service.data.Triangle;
 import com.atanava.bsc.util.GeometryUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BaseStationService {
 
+    @Value("${errors.default_error_distance}")
+    public float defaultErrorDistance = -1.0f;
+
     private final ReportService reportService;
 
     private final BcsCacheHolder meshHolder;
@@ -37,8 +41,8 @@ public class BaseStationService {
     private final BaseStationRepository baseStationRepository;
 
     public Mono<MessageDto> saveReports(MessageDto messageDto){
-        return baseStationRepository.findById(messageDto.getBaseId())
-                .switchIfEmpty(Mono.error(new FakeReportException(messageDto.getBaseId())))
+        return baseStationRepository.findById(messageDto.baseId())
+                .switchIfEmpty(Mono.error(new FakeReportException(messageDto.baseId())))
                 .flatMap(base -> reportService.saveReports(messageDto))
                 .onErrorResume(e -> {
                     log.error(e.getMessage() + System.lineSeparator() + "Report Message: " + messageDto);
@@ -63,11 +67,11 @@ public class BaseStationService {
                                         .collectList()
                                         .map(reports -> {
                                             if (reports.size() < 1) {
-                                                log.error(prepareError(mobileId, -1F).toString());
+                                                log.error(prepareError(mobileId).toString());
                                                 return meshHolder.getLastKnownLocations().stream()
                                                         .filter(loc -> mobileId.equals(loc.getMobileId()))
                                                         .findFirst()
-                                                        .orElse(prepareError(mobileId, reports.get(0).getDistance()));
+                                                        .orElse(prepareError(mobileId));
                                             }
                                             reports.add(report);
                                             return updateLastLocation(mobileId, triangle, reports);
@@ -78,7 +82,7 @@ public class BaseStationService {
                         .switchIfEmpty(Mono.error(new RuntimeException()))
                         .onErrorResume((e) -> {
                             log.error(e.getMessage());
-                            return Mono.just(prepareError(mobileId, -1F));
+                            return Mono.just(prepareError(mobileId));
                         })
                 );
     }
@@ -92,6 +96,10 @@ public class BaseStationService {
                         .orElse(report))
                 .distinct(Report::getBaseId)
                 .take(2);
+    }
+
+    private LastKnownLocation prepareError(UUID mobileId) {
+        return prepareError(mobileId, defaultErrorDistance);
     }
 
     private LastKnownLocation prepareError(UUID mobileId, float distance) {
@@ -114,7 +122,7 @@ public class BaseStationService {
                     meshHolder.getLastKnownLocations().add(lastKnownLocation);
                     return lastKnownLocation;
                 })
-                .orElse(prepareError(mobileId, -1F));
+                .orElse(prepareError(mobileId));
     }
 
     private LastKnownLocation prepareLastLocation(UUID mobileId, Triangle triangle, Point2D point) {

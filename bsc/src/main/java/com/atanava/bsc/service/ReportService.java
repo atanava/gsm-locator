@@ -23,8 +23,8 @@ public class ReportService {
     private final TransactionalOperator txOperator;
 
     public Mono<MessageDto> saveReports(MessageDto messageDto) {
-        val baseId = messageDto.getBaseId();
-        return Flux.fromIterable(messageDto.getReports())
+        val baseId = messageDto.baseId();
+        return Flux.fromIterable(messageDto.reports())
                 .map(dto -> reportRepository.save(ReportConverter.dtoToReport(baseId, dto)))
                 .then()
                 .thenReturn(messageDto)

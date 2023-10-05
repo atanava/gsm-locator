@@ -55,9 +55,9 @@ class BaseStationDefinitionProviderTest {
         double maxY = stations.stream().mapToDouble(BaseStationDto::getLongitude).max().orElse(0);
         System.out.println("Width: " + (maxX - minX));
         System.out.println("Height: " + (maxY - minY));
-        System.out.println("Distance in meters: " + new Double(GeometryUtil.distanceInMeters(minX, maxX, minY, maxY, 0, 0)).floatValue());
-        System.out.println("Width in meters: " + new Double(GeometryUtil.distanceInMeters(minX, maxX, minY, minY, 0, 0)).floatValue());
-        System.out.println("Height in meters: " + new Double(GeometryUtil.distanceInMeters(minX, minX, minY, maxY, 0, 0)).floatValue());
+        System.out.println("Distance in meters: " + (float) GeometryUtil.distanceInMeters(minX, maxX, minY, maxY, 0, 0));
+        System.out.println("Width in meters: " + (float) GeometryUtil.distanceInMeters(minX, maxX, minY, minY, 0, 0));
+        System.out.println("Height in meters: " + (float) GeometryUtil.distanceInMeters(minX, minX, minY, maxY, 0, 0));
         System.out.println("Hotels: " + stations.stream().filter(b -> "hotel".equalsIgnoreCase(b.getLocationType())).count());
         System.out.println("Supermarkets: " + stations.stream().filter(b -> "supermarket".equalsIgnoreCase(b.getLocationType())).count());
     }

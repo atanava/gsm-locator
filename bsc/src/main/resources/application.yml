@@ -19,3 +19,6 @@ osm:
         supermarket
       location: tallinn
       format: json
+
+errors:
+  default_error_distance: -1.0f
